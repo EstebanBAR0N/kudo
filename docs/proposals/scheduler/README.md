@@ -10,6 +10,43 @@ Find all the API definitions for Kudo Scheduler including types, protocols and e
 
 ---
 
+### Enumerations
+
+---
+
+```protobuf
+// Represents the Status of a node or a workflow
+enum Status {
+    RUNNING = 0;
+    STARTING = 1;
+    STOPPED = 2;
+    STOPPING = 3;
+    DESTROYING = 4;
+    TERMINATED = 5;
+    CRASHED = 6;
+    FAILED = 7;
+    SCHEDULING = 8;
+    SCHEDULED = 9;
+}
+```
+
+```protobuf
+// Represents the different Instance actions possible
+enum Action {
+    START = 0;
+    STOP = 1;
+    DESTROY = 2;
+    KILL = 3;
+}
+```
+
+```protobuf
+// Represents the different Type of a workflow
+enum Type {
+    CONTAINER = 0;
+}
+```
+
 ### Structures
 
 ---
@@ -25,6 +62,7 @@ message Instance {
     []string environnement = 6;
     Resource resource = 7;
     []string ports = 8;
+    string ip = 9;
 }
 ```
 
@@ -79,47 +117,9 @@ message NodeRegisterRequest {
 message NodeRegisterResponse {
     int code = 1;
     string description = 2;
+    string subnet = 3;
 }
 ```
-
-### Enumerations
-
----
-
-```protobuf
-// Represents the Status of a node or a workflow
-enum Status {
-    RUNNING = 0;
-    STARTING = 1;
-    STOPPED = 2;
-    STOPPING = 3;
-    DESTROYING = 4;
-    TERMINATED = 5;
-    CRASHED = 6;
-    FAILED = 7;
-    SCHEDULING = 8;
-    SCHEDULED = 9;
-}
-```
-
-```protobuf
-// Represents the different Instance actions possible
-enum Action {
-    START = 0;
-    STOP = 1;
-    DESTROY = 2;
-    KILL = 3;
-}
-```
-
-```protobuf
-// Represents the different Type of a workflow
-enum Type {
-    CONTAINER = 0;
-}
-```
-
-
 
 ## ⚙️ Node → Scheduler (gRPC)
 
