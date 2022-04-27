@@ -57,11 +57,11 @@ message Instance {
     string id = 1;
     string name = 2;
     Type type = 3;
-    State state = 4;
+    Status status = 4;
     string uri = 5;
-    []string environnement = 6;
+    repeated string environnement = 6;
     Resource resource = 7;
-    []string ports = 8;
+    repeated string ports = 8;
     string ip = 9;
 }
 ```
@@ -69,9 +69,9 @@ message Instance {
 ```protobuf
 // Represents a summary of all necessary resources
 message ResourceSummary {
-    int cpu = 1;
-    int memory = 2;
-    int disk = 3;
+    int32 cpu = 1;
+    int32 memory = 2;
+    int32 disk = 3;
 }
 
 // Represent the maximum/usage of a Instance or a Node
@@ -95,7 +95,7 @@ message NodeStatus {
     Status status = 2;
     string description = 3;
     Resource resource = 4;
-    []Instance instances = 5;
+    repeated Instance instances = 5;
 }
 ```
 
@@ -115,7 +115,7 @@ message NodeRegisterRequest {
 
 // Represents the response of the Node Register request
 message NodeRegisterResponse {
-    int code = 1;
+    int32 code = 1;
     string description = 2;
     string subnet = 3;
 }
@@ -128,8 +128,8 @@ message NodeRegisterResponse {
 ```protobuf
 service AgentService {
     rpc NodeRegister (NodeRegisterRequest) returns (NodeRegisterResponse) {}
-    rpc NodeStatus (google.protobuf.Empty) returns (stream NodeStatus) {}
-    rpc InstanceStatus (google.protobuf.Empty) returns (stream InstanceStatus) {}
+    rpc NodeStatusUpdate (stream NodeStatus) returns (google.protobuf.Empty) {}
+    rpc InstanceStatusUpdate (stream InstanceStatus) returns (google.protobuf.Empty) {}
 }
 ```
 
