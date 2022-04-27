@@ -1,13 +1,27 @@
 use crate::users::User;
-use actix_web::web::Path;
-use actix_web::{get, HttpResponse};
+use actix_web::dev::{HttpServiceFactory, ServiceFactory};
+use actix_web::web::{self, Path};
+use actix_web::{get, services, HttpResponse, Scope};
+
+pub fn routes() -> Scope {
+    let service = web::scope("/user")
+        .service(get_user)
+        .service(get_users)
+        .service(get_test);
+    return service;
+}
 
 enum UserStatus {
     NotFound(i32),
     Found(User),
 }
 
-#[get("/users/{id}")]
+#[get("/test")]
+pub async fn get_test() -> HttpResponse {
+    HttpResponse::Ok().body("Hello test")
+}
+
+#[get("/{id}")]
 pub async fn get_user(path: Path<i32>) -> HttpResponse {
     let id = path.into_inner();
 
@@ -22,4 +36,9 @@ pub async fn get_user(path: Path<i32>) -> HttpResponse {
 
         UserStatus::NotFound(id) => HttpResponse::NotFound().body(format!("Not found : {}", id)),
     }
+}
+
+#[get("/")]
+pub async fn get_users() -> HttpResponse {
+    HttpResponse::Ok().body("Hello world")
 }
